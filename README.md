@@ -23,31 +23,81 @@
 | **DevOps**     | Git, GitHub |
 
 ## Installation ⚙️
+
+### Local Development Setup
 ```bash
 # Clone repository
 git clone https://github.com/yourusername/polychat.git
-
-# Install dependencies
 cd polychat
+
+# Install backend dependencies
+cd server
+npm install
+
+# Install frontend dependencies
+cd ../client
 npm install
 
 # Set up environment variables
-cd client
-touch .env
-add below inside the .env
-VITE_SERVER_URL="http://localhost:8747"
+# Backend (.env in server folder)
+cd ../server
+cp .env.example .env
+# Edit .env and add your values:
+# PORT=8747
+# JWT_KEY=your_secure_random_string
+# ORIGIN=http://localhost:5173
+# DATABASE_URL=your_mongodb_connection_string
+# GEMINI_API_KEY=your_gemini_api_key
 
-cd server
-touch .env
-add below inside .env
-PORT=8747
-JWT_KEY=""
-ORIGIN="http://localhost:5173"
-DATABASE_URL=""
-GEMINI_API_KEY=""
+# Frontend (.env in client folder)
+cd ../client
+cp .env.example .env
+# Edit .env and add:
+# VITE_SERVER_URL=http://localhost:8747
 
-
-# Run development server
+# Run backend server (from server folder)
+cd ../server
+npm start
+# or for development with auto-reload:
 npm run dev
+
+# Run frontend (from client folder, in a new terminal)
+cd ../client
+npm run dev
+```
+
+## Deployment 🚀
+
+This application is ready for deployment with:
+- **Backend**: Render.com (or any Node.js hosting)
+- **Frontend**: Vercel (or Netlify)
+
+📖 **Deployment Guides:**
+- [Complete Deployment Guide](./DEPLOYMENT.md) - Full detailed guide
+- [Render Backend Guide](./RENDER_DEPLOYMENT.md) - Deploy backend first
+- [Vercel Frontend Guide](./VERCEL_DEPLOYMENT.md) - Deploy frontend second
+
+### Quick Deployment Steps:
+1. 🔧 Deploy backend on Render first → [Guide](./RENDER_DEPLOYMENT.md)
+2. 🔗 Get backend URL and update frontend environment variable
+3. 🎨 Deploy frontend on Vercel → [Guide](./VERCEL_DEPLOYMENT.md)
+4. ✅ Update backend CORS settings with frontend URL
+
+## Environment Variables 🔐
+
+### Backend (server/.env)
+```env
+PORT=8747
+JWT_KEY=your_jwt_secret_key_here
+ORIGIN=http://localhost:5173,https://your-frontend-url.vercel.app
+DATABASE_URL=mongodb+srv://username:password@cluster.mongodb.net/dbname
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+### Frontend (client/.env)
+```env
+VITE_SERVER_URL=http://localhost:8747
+# For production: https://your-backend-url.onrender.com
+```
 
 

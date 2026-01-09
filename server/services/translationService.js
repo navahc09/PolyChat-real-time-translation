@@ -8,7 +8,7 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 console.log("Gemini API Key loaded:", GEMINI_API_KEY ? "Loaded" : "Not Loaded");
 
 const GEMINI_API_URL =
-  "https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent";
+  "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
 
 /**
  * Determines if translation should be forced, especially for Hinglish to Hindi cases

@@ -9,12 +9,18 @@ import {
 } from "./services/translationService.js";
 
 const setupSocket = (server) => {
+  // For deployment: Allow multiple origins
+  const allowedOrigins = process.env.ORIGIN 
+    ? process.env.ORIGIN.split(',').map(origin => origin.trim())
+    : ['http://localhost:5173'];
+
   const io = new SocketIoServer(server, {
     cors: {
-      origin: process.env.ORIGIN,
+      origin: allowedOrigins,
       methods: ["GET", "POST"],
       credentials: true,
     },
+    transports: ['websocket', 'polling'], // Ensure both transports are available
   });
 
   const userSocketMap = new Map();

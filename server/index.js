@@ -14,9 +14,23 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 8747;
 
+// For deployment: Allow multiple origins
+const allowedOrigins = process.env.ORIGIN 
+  ? process.env.ORIGIN.split(',').map(origin => origin.trim())
+  : ['http://localhost:5173'];
+
 app.use(
   cors({
-    origin: [process.env.ORIGIN],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.indexOf(origin) !== -1) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true, //for enabling cookies
   })
